@@ -1,0 +1,31 @@
+
+.concent {
+    display: flex;
+    margin: 100px 50px 50px 50px;
+    font-family: sans-serif; /* виправлено: sans serif -> sans-serif */
+}
+
+.area {
+    width: 156px; /* додано ; */
+    border: 1px solid #000; /* виправлено: border 1px solid #000 -> border: 1px solid #000; */
+    margin: 0 auto;
+    font-size: 0;
+}
+
+.cell {
+    width: 50px;
+    height: 50px; /* виправлено: heigth -> height */
+    line-height: 50px; /* виправлено: line-heigth -> line-height */
+    text-align: center;
+    display: inline-block;
+    font-size: 30px;
+    border: 1px solid #000;
+    cursor: pointer;
+    vertical-align: middle;
+  
+}
+.cell:hover {
+    background-color: #F1F1F1;
+}
+
+

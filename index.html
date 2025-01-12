@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8"> <!-- Встановлюємо кодування символів -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Адаптація для мобільних пристроїв -->
+    <title>Хрестики-Нулики</title> <!-- Заголовок сторінки -->
+    <style>
+        body {
+            margin: 0; /* Вимикаємо відступи */
+            padding: 0; /* Вимикаємо внутрішні відступи */
+            display: flex; /* Використовуємо Flexbox для центрування вмісту */
+            justify-content: center; /* Центруємо по горизонталі */
+            align-items: center; /* Центруємо по вертикалі */
+            height: 100vh; /* Висота тіла на всю висоту вікна браузера */
+            font-family: Arial, sans-serif; /* Шрифт для всього документа */
+        }
+        .game-board {
+            display: grid; /* Використовуємо CSS Grid для сітки */
+            grid-template-columns: repeat(3, 100px); /* Три стовпці по 100px */
+            grid-gap: 5px; /* Відстань між комірками */
+        }
+        .cell {
+            width: 100px; /* Ширина комірки */
+            height: 100px; /* Висота комірки */
+            display: flex; /* Використовуємо Flexbox для центрування вмісту комірки */
+            justify-content: center; /* Центруємо вміст по горизонталі */
+            align-items: center; /* Центруємо вміст по вертикалі */
+            font-size: 2em; /* Розмір шрифту в комірках */
+            border: 2px solid #000; /* Чорна рамка навколо комірок */
+            cursor: pointer; /* Змінюємо курсор на pointer при наведенні */
+        }
+        .cell:hover {
+            background-color: #f1f1f1; /* Зміна фону при наведенні на комірку */
+        }
+    </style>
+</head>
+<body>
+
+<div class="game-board">
+    <!-- Створюємо 9 комірок для гри -->
+    <div class="cell" data-index="0"></div>
+    <div class="cell" data-index="1"></div>
+    <div class="cell" data-index="2"></div>
+    <div class="cell" data-index="3"></div>
+    <div class="cell" data-index="4"></div>
+    <div class="cell" data-index="5"></div>
+    <div class="cell" data-index="6"></div>
+    <div class="cell" data-index="7"></div>
+    <div class="cell" data-index="8"></div>
+</div>
+
+<script>
+      const cells = document.querySelectorAll('.cell'); // Замість "cell" використовується "cells" для отримання всіх комірок
+    let currentPlayer = 'X'; // Початковий гравець
+    let board = Array(9).fill(null); // Масив для зберігання стану кожної комірки
+
+    // Можливі виграшні комбінації
+    const winPatterns = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6]
+    ];
+
+    // Функція перевірки на виграш
+    function checkWin() {
+        return winPatterns.some(pattern => {
+            const [a, b, c] = pattern;
+            return board[a] && board[a] === board[b] && board[a] === board[c];
+        });
+    }
+
+    // Функція перевірки на нічию
+    function checkDraw() {
+        return board.every(cell => cell !== null);
+    }
+
+    // Обробник події кліку на комірку
+    function handleCellClick(event) {
+        const cell = event.target;
+        const index = cell.getAttribute('data-index');
+
+        if (board[index] !== null) { // Перевірка, чи комірка не зайнята
+            alert("ячейка зайнята");
+            return;
+        }
+
+        board[index] = currentPlayer; // Оновлюємо масив board для поточного гравця
+        cell.textContent = currentPlayer; // Відображаємо символ поточного гравця в комірці
+
+        if (checkWin()) { // Перевірка на виграш
+            alert("вийграв " + currentPlayer);
+            restartGame(); // Перезапуск гри у випадку виграшу
+            return;
+        } else if (checkDraw()) { // Перевірка на нічию
+            alert("нічія");
+            restartGame(); // Перезапуск гри у випадку нічиї
+            return;
+        }
+
+        currentPlayer = currentPlayer === 'X' ? 'O' : 'X'; // Зміна гравця
+    }
+
+    // Функція для перезапуску гри
+    function restartGame() {
+        board.fill(null); // Очищення масиву board
+        cells.forEach(cell => cell.textContent = ''); // Очищення тексту в кожній комірці
+        currentPlayer = 'X'; // Повернення до початкового гравця
+    }
+
+    // Додаємо обробник події кліку для кожної комірки
+    cells.forEach(cell => cell.addEventListener('click', handleCellClick));
+</script>
+</body>
+</html> 
